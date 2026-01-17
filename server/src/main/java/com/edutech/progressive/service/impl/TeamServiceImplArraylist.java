@@ -37,4 +37,8 @@ public class TeamServiceImplArraylist implements TeamService {
         return sorted;
     }
 
+    public void emptyArrayList(){
+        
+    }
+
 }
