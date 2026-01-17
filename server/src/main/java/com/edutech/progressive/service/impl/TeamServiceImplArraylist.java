@@ -2,7 +2,6 @@ package com.edutech.progressive.service.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import com.edutech.progressive.entity.Team;
@@ -10,35 +9,35 @@ import com.edutech.progressive.service.TeamService;
 
 public class TeamServiceImplArraylist implements TeamService {
 
-    List<Team> list = new ArrayList<>();
+    List<Team> teams = new ArrayList<>();
+
+    public TeamServiceImplArraylist() {
+        teams.add(new Team(101, "Chennai Warriors", "Chennai", "R. Iyer", 2008));
+        teams.add(new Team(102, "Bangalore Blazers", "Bengaluru", "S. Rao", 2009));
+        teams.add(new Team(103, "Mumbai Mariners", "Mumbai", "K. Mehta", 2008));
+        teams.add(new Team(104, "Delhi Dominators", "Delhi", "P. Verma", 2010));
+    }
 
     @Override
     public List<Team> getAllTeams() {
-        return list;
+        return teams;
     }
 
     @Override
     public int addTeam(Team team) {
-        list.add(team);
-        return 1;
+        teams.add(team);
+        return teams.size();
     }
 
     @Override
     public List<Team> getAllTeamsSortedByName() {
-        List<Team> sorted = new ArrayList<>(list);
-        Collections.sort(sorted, new Comparator<Team>() {
-
-            @Override
-            public int compare(Team arg0, Team arg1) {
-                return arg0.getTeamName().compareToIgnoreCase(arg1.getTeamName());
-            }
-            
-        });
-        return sorted;
+        Collections.sort(teams);
+        return teams;
     }
 
     public void emptyArrayList(){
-        
+        TeamService.super.emptyArrayList();
+        teams = new ArrayList<>();
     }
 
 }
