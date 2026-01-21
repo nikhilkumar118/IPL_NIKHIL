@@ -14,8 +14,12 @@ import com.edutech.progressive.service.CricketerService;
 @Service
 public class CricketerServiceImplJpa implements CricketerService {
 
-    @Autowired
     private CricketerRepository cricketerRepository;
+    
+    @Autowired
+    public CricketerServiceImplJpa(CricketerRepository cricketerRepository) {
+        this.cricketerRepository = cricketerRepository;
+    }
 
     @Override
     public List<Cricketer> getAllCricketers() throws SQLException {

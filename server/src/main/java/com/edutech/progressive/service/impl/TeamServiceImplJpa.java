@@ -13,8 +13,12 @@ import com.edutech.progressive.service.TeamService;
 
 @Service
 public class TeamServiceImplJpa implements TeamService {
-    @Autowired
     private TeamRepository teamRepository;
+
+    @Autowired
+    public TeamServiceImplJpa(TeamRepository teamRepository) {
+        this.teamRepository = teamRepository;
+    }
 
     @Override
     public List<Team> getAllTeams() throws SQLException {

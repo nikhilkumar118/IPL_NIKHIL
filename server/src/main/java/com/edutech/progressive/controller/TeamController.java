@@ -23,11 +23,18 @@ import java.util.List;
 @RequestMapping("/team")
 public class TeamController {
 
-    @Autowired
+    // @Autowired
     private TeamServiceImplArraylist teamServiceImplArraylist;
 
-    @Autowired
+    // @Autowired
     private TeamServiceImplJpa teamServiceImplJpa;
+
+    
+    @Autowired
+    public TeamController(TeamServiceImplArraylist teamServiceImplArraylist, TeamServiceImplJpa teamServiceImplJpa) {
+        this.teamServiceImplArraylist = teamServiceImplArraylist;
+        this.teamServiceImplJpa = teamServiceImplJpa;
+    }
 
     @GetMapping
     public ResponseEntity<List<Team>> getAllTeams() {
@@ -67,10 +74,10 @@ public class TeamController {
     }
 
     @DeleteMapping("/{teamId}")
-    public ResponseEntity<Void> deleteTeam(int teamId) {
+    public ResponseEntity<Void> deleteTeam(@PathVariable int teamId) {
         try {
             teamServiceImplJpa.deleteTeam(teamId);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (SQLException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
