@@ -6,10 +6,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
+@Table(name = "matches")
 public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +26,18 @@ public class Match {
     private int winnerTeamId;
     public Match() {
     }
+    
+    public Match(int firstTeamId, int secondTeamId, Date matchDate, String venue, String result, String status,
+            int winnerTeamId) {
+        this.firstTeamId = firstTeamId;
+        this.secondTeamId = secondTeamId;
+        this.matchDate = matchDate;
+        this.venue = venue;
+        this.result = result;
+        this.status = status;
+        this.winnerTeamId = winnerTeamId;
+    }
+
     public Match(int matchId, int firstTeamId, int secondTeamId, Date matchDate, String venue, String result,
             String status, int winnerTeamId) {
         this.matchId = matchId;

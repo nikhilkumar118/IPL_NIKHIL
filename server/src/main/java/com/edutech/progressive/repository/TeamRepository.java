@@ -7,5 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.edutech.progressive.entity.Team;
 
 public interface TeamRepository extends JpaRepository<Team, Integer>{
-    List<Team> findAllOrderByNameAsc();
+    
+    Team findByTeamId(int teamId);
 }

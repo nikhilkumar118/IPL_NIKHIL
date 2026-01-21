@@ -47,17 +47,17 @@ public class TeamController {
         }
     }
 
-    @PostMapping("/{team}")
-    public ResponseEntity<Integer> addTeam(@PathVariable Team team) {
+    @PostMapping
+    public ResponseEntity<Integer> addTeam(@RequestBody Team team) {
         try {
-            return new ResponseEntity<>(teamServiceImplJpa.addTeam(team),HttpStatus.OK);
+            return new ResponseEntity<>(teamServiceImplJpa.addTeam(team),HttpStatus.CREATED);
         } catch (SQLException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/{teamId}")
-    public ResponseEntity<Void> updateTeam(int teamId, Team team) {
+    public ResponseEntity<Void> updateTeam(@PathVariable int teamId, @RequestBody Team team) {
         try {
             teamServiceImplJpa.updateTeam(team);
             return new ResponseEntity<>(HttpStatus.OK);
