@@ -1,16 +1,23 @@
 package com.edutech.progressive.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Cricketer implements Comparable<Cricketer>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cricketerId;
-    private int teamId;
+    // private int teamId;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "team_id")
+    private Team team;
     private String cricketerName;
     private int age;
     private String nationality;
@@ -23,7 +30,7 @@ public class Cricketer implements Comparable<Cricketer>{
     
     public Cricketer(int teamId, String cricketerName, int age, String nationality, int experience, String role,
             int totalRuns, int totalWickets) {
-        this.teamId = teamId;
+        this.team.setTeamId(teamId);
         this.cricketerName = cricketerName;
         this.age = age;
         this.nationality = nationality;
@@ -36,7 +43,7 @@ public class Cricketer implements Comparable<Cricketer>{
     public Cricketer(int cricketerId, int teamId, String cricketerName, int age, String nationality, int experience,
             String role, int totalRuns, int totalWickets) {
         this.cricketerId = cricketerId;
-        this.teamId = teamId;
+        this.team.setTeamId(teamId);
         this.cricketerName = cricketerName;
         this.age = age;
         this.nationality = nationality;
@@ -51,11 +58,18 @@ public class Cricketer implements Comparable<Cricketer>{
     public void setCricketerId(int cricketerId) {
         this.cricketerId = cricketerId;
     }
-    public int getTeamId() {
-        return teamId;
+    // public int getTeamId() {
+    //     return teamId;
+    // }
+    // public void setTeamId(int teamId) {
+    //     this.teamId = teamId;
+    // }
+    public Team getTeam() {
+        return team;
     }
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
     public String getCricketerName() {
         return cricketerName;

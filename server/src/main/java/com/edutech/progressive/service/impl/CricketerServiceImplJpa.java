@@ -2,6 +2,7 @@ package com.edutech.progressive.service.impl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,28 +24,34 @@ public class CricketerServiceImplJpa implements CricketerService {
 
     @Override
     public List<Cricketer> getAllCricketers() throws SQLException {
-        return new ArrayList<>();
+        return cricketerRepository.findAll();
     }
 
     @Override
     public Integer addCricketer(Cricketer cricketer) throws SQLException {
-        return -1;
+        return cricketerRepository.save(cricketer).getCricketerId();
     }
 
     @Override
     public List<Cricketer> getAllCricketersSortedByExperience() throws SQLException {
-        return new ArrayList<>();
+        List<Cricketer> sortedCricketer = cricketerRepository.findAll();
+        sortedCricketer.sort(Comparator.comparing(Cricketer::getExperience));
+        return sortedCricketer;
     }
 
-    public void updateCricketer(Cricketer cricketer) throws SQLException {}
+    public void updateCricketer(Cricketer cricketer) throws SQLException {
+        cricketerRepository.save(cricketer);
+    }
 
-    public void deleteCricketer(int cricketerId) throws SQLException {}
+    public void deleteCricketer(int cricketerId) throws SQLException {
+        cricketerRepository.deleteById(cricketerId);
+    }
 
     public Cricketer getCricketerById(int cricketerId) throws SQLException {
-        return null;
+        return cricketerRepository.findByCricketerId(cricketerId);
     }
 
     public List<Cricketer> getCricketersByTeam(int teamId) throws SQLException{
-        return null;
+        return cricketerRepository.findByTeam_TeamId(teamId);
     }
 }

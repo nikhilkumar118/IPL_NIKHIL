@@ -19,7 +19,7 @@ public class CricketerDAOImpl implements CricketerDAO{
         String sql = "INSERT INTO cricketer (team_id, cricketer_name, age, nationality, experience, role, total_runs, total_wickets) VALUES (?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, cricketer.getTeamId());
+            ps.setInt(1, cricketer.getTeam().getTeamId());
             ps.setString(2, cricketer.getCricketerName());
             ps.setInt(3, cricketer.getAge());
             ps.setString(4, cricketer.getNationality());
@@ -48,19 +48,29 @@ public class CricketerDAOImpl implements CricketerDAO{
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, cricketerId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                Cricketer cricketer = new Cricketer();
-                cricketer.setCricketerId(rs.getInt("cricketer_id"));
-                cricketer.setTeamId(rs.getInt("team_id"));
-                cricketer.setCricketerName(rs.getString("cricketer_name"));
-                cricketer.setAge(rs.getInt("age"));
-                cricketer.setNationality(rs.getString("nationality"));
-                cricketer.setExperience(rs.getInt("experience"));
-                cricketer.setRole(rs.getString("role"));
-                cricketer.setTotalRuns(rs.getInt("total_runs"));
-                cricketer.setTotalWickets(rs.getInt("total_wickets"));
-                return cricketer;
+            ResultSet resultSet = ps.executeQuery();
+            if (resultSet.next()) {
+                // Cricketer cricketer = new Cricketer();
+                // cricketer.setCricketerId(rs.getInt("cricketer_id"));
+                // cricketer.setTeam(rs.getInt("team_id"));
+                // cricketer.setCricketerName(rs.getString("cricketer_name"));
+                // cricketer.setAge(rs.getInt("age"));
+                // cricketer.setNationality(rs.getString("nationality"));
+                // cricketer.setExperience(rs.getInt("experience"));
+                // cricketer.setRole(rs.getString("role"));
+                // cricketer.setTotalRuns(rs.getInt("total_runs"));
+                // cricketer.setTotalWickets(rs.getInt("total_wickets"));
+                // return cricketer;
+                int teamId = resultSet.getInt("team_id");
+                String cricketerName = resultSet.getString("cricketer_name");
+                int age = resultSet.getInt("age");
+                String nationality = resultSet.getString("nationality");
+                int experience = resultSet.getInt("experience");
+                String role = resultSet.getString("role");
+                int totalRuns = resultSet.getInt("total_runs");
+                int totalWickets = resultSet.getInt("total_wickets");
+ 
+                return new Cricketer(cricketerId, teamId, cricketerName, age, nationality, experience, role, totalRuns, totalWickets);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -73,7 +83,7 @@ public class CricketerDAOImpl implements CricketerDAO{
         String sql = "UPDATE cricketer SET team_id = ?, cricketer_name = ?, age = ?, nationality = ?, experience = ?, role = ?, total_runs = ?, total_wickets = ? WHERE cricketer_id = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, cricketer.getTeamId());
+            ps.setInt(1, cricketer.getTeam().getTeamId());
             ps.setString(2, cricketer.getCricketerName());
             ps.setInt(3, cricketer.getAge());
             ps.setString(4, cricketer.getNationality());

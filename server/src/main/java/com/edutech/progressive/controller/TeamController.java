@@ -23,13 +23,10 @@ import java.util.List;
 @RequestMapping("/team")
 public class TeamController {
 
-    // @Autowired
     private TeamServiceImplArraylist teamServiceImplArraylist;
 
-    // @Autowired
     private TeamServiceImplJpa teamServiceImplJpa;
 
-    
     @Autowired
     public TeamController(TeamServiceImplArraylist teamServiceImplArraylist, TeamServiceImplJpa teamServiceImplJpa) {
         this.teamServiceImplArraylist = teamServiceImplArraylist;

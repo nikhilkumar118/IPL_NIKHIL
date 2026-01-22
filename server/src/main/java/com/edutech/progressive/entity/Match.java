@@ -2,10 +2,13 @@ package com.edutech.progressive.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -16,38 +19,49 @@ public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int matchId;
-    private int firstTeamId;
-    private int secondTeamId;
+    // private int firstTeamId;
+    // private int secondTeamId;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "first_team_id")
+    private Team firstTeam;
+ 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "second_team_id")
+    private Team secondTeam;
+    
     @Temporal(TemporalType.DATE)
     private Date matchDate;
     private String venue;
     private String result;
     private String status;
-    private int winnerTeamId;
+    
+    @ManyToOne
+    @JoinColumn(name = "winner_team_id")
+    private Team winnerTeam;
     public Match() {
     }
     
     public Match(int firstTeamId, int secondTeamId, Date matchDate, String venue, String result, String status,
             int winnerTeamId) {
-        this.firstTeamId = firstTeamId;
-        this.secondTeamId = secondTeamId;
+        this.firstTeam.setTeamId(firstTeamId);
+        this.secondTeam.setTeamId(secondTeamId);
         this.matchDate = matchDate;
         this.venue = venue;
         this.result = result;
         this.status = status;
-        this.winnerTeamId = winnerTeamId;
+        this.winnerTeam.setTeamId(winnerTeamId);
     }
 
     public Match(int matchId, int firstTeamId, int secondTeamId, Date matchDate, String venue, String result,
             String status, int winnerTeamId) {
         this.matchId = matchId;
-        this.firstTeamId = firstTeamId;
-        this.secondTeamId = secondTeamId;
+        this.firstTeam.setTeamId(firstTeamId);
+        this.secondTeam.setTeamId(secondTeamId);
         this.matchDate = matchDate;
         this.venue = venue;
         this.result = result;
         this.status = status;
-        this.winnerTeamId = winnerTeamId;
+        this.winnerTeam.setTeamId(winnerTeamId);
     }
     public int getMatchId() {
         return matchId;
@@ -55,17 +69,17 @@ public class Match {
     public void setMatchId(int matchId) {
         this.matchId = matchId;
     }
-    public int getFirstTeamId() {
-        return firstTeamId;
+    public Team getFirstTeam() {
+        return firstTeam;
     }
-    public void setFirstTeamId(int firstTeamId) {
-        this.firstTeamId = firstTeamId;
+    public void setFirstTeam(Team firstTeam) {
+        this.firstTeam = firstTeam;
     }
-    public int getSecondTeamId() {
-        return secondTeamId;
+    public Team getSecondTeam() {
+        return secondTeam;
     }
-    public void setSecondTeamId(int secondTeamId) {
-        this.secondTeamId = secondTeamId;
+    public void setSecondTeam(Team secondTeam) {
+        this.secondTeam = secondTeam;
     }
     public Date getMatchDate() {
         return matchDate;
@@ -91,11 +105,11 @@ public class Match {
     public void setStatus(String status) {
         this.status = status;
     }
-    public int getWinnerTeamId() {
-        return winnerTeamId;
+    public Team getWinnerTeam() {
+        return winnerTeam;
     }
-    public void setWinnerTeamId(int winnerTeamId) {
-        this.winnerTeamId = winnerTeamId;
+    public void setWinnerTeam(Team winnerTeam) {
+        this.winnerTeam = winnerTeam;
     }
     
 }
