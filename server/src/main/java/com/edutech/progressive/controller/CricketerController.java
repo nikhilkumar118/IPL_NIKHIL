@@ -1,6 +1,7 @@
 package com.edutech.progressive.controller;
 
 import com.edutech.progressive.entity.Cricketer;
+import com.edutech.progressive.exception.TeamCricketerLimitExceededException;
 import com.edutech.progressive.service.impl.CricketerServiceImplJpa;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,8 @@ public class CricketerController {
         try {
             int cricketerId = cricketerServiceImplJpa.addCricketer(cricketer);
             return new ResponseEntity<>(cricketerId, HttpStatus.CREATED);
+        } catch (TeamCricketerLimitExceededException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>("An unexpected error occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR); // Generic error handling
         }

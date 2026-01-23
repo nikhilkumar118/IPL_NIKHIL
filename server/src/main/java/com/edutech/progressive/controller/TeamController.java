@@ -1,6 +1,8 @@
 package com.edutech.progressive.controller;
 
 import com.edutech.progressive.entity.Team;
+import com.edutech.progressive.exception.TeamAlreadyExistsException;
+import com.edutech.progressive.exception.TeamDoesNotExistException;
 import com.edutech.progressive.service.impl.TeamServiceImplArraylist;
 import com.edutech.progressive.service.impl.TeamServiceImplJpa;
 
@@ -43,28 +45,36 @@ public class TeamController {
     }
 
     @GetMapping("/{teamId}")
-    public ResponseEntity<Team> getTeamById(@PathVariable int teamId) {
+    public ResponseEntity<?> getTeamById(@PathVariable int teamId) {
         try {
             return new ResponseEntity<>(teamServiceImplJpa.getTeamById(teamId),HttpStatus.OK);
+        } catch (TeamDoesNotExistException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (SQLException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping
-    public ResponseEntity<Integer> addTeam(@RequestBody Team team) {
+    public ResponseEntity<?> addTeam(@RequestBody Team team) {
         try {
             return new ResponseEntity<>(teamServiceImplJpa.addTeam(team),HttpStatus.CREATED);
-        } catch (SQLException e) {
+        } 
+        catch (TeamAlreadyExistsException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        catch (SQLException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/{teamId}")
-    public ResponseEntity<Void> updateTeam(@PathVariable int teamId, @RequestBody Team team) {
+    public ResponseEntity<?> updateTeam(@PathVariable int teamId, @RequestBody Team team) {
         try {
             teamServiceImplJpa.updateTeam(team);
             return new ResponseEntity<>(HttpStatus.OK);
+        } catch (TeamAlreadyExistsException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);  
         } catch (SQLException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
