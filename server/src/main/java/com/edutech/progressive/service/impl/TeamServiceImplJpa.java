@@ -10,13 +10,29 @@ import org.springframework.stereotype.Service;
 import com.edutech.progressive.entity.Team;
 import com.edutech.progressive.exception.TeamAlreadyExistsException;
 import com.edutech.progressive.exception.TeamDoesNotExistException;
+import com.edutech.progressive.repository.CricketerRepository;
+import com.edutech.progressive.repository.MatchRepository;
 import com.edutech.progressive.repository.TeamRepository;
+import com.edutech.progressive.repository.TicketBookingRepository;
+import com.edutech.progressive.repository.VoteRepository;
 import com.edutech.progressive.service.TeamService;
 
 @Service
 public class TeamServiceImplJpa implements TeamService {
     private TeamRepository teamRepository;
 
+    @Autowired
+    TicketBookingRepository ticketBookingRepository;
+ 
+    @Autowired
+    CricketerRepository cricketerRepository;
+ 
+    @Autowired
+    MatchRepository matchRepository;
+ 
+    @Autowired
+    VoteRepository voteRepository;
+    
     @Autowired
     public TeamServiceImplJpa(TeamRepository teamRepository) {
         this.teamRepository = teamRepository;
@@ -67,6 +83,10 @@ public class TeamServiceImplJpa implements TeamService {
  
     @Override
     public void deleteTeam(int teamId) throws SQLException {
+        voteRepository.deleteByTeamId(teamId);
+        ticketBookingRepository.deleteByTeamId(teamId);
+        matchRepository.deleteByTeamId(teamId);
+        cricketerRepository.deleteByTeamId(teamId);
         teamRepository.deleteById(teamId);
     }
     

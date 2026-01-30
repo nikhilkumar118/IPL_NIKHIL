@@ -10,12 +10,16 @@ import org.springframework.stereotype.Service;
 import com.edutech.progressive.entity.Match;
 import com.edutech.progressive.exception.NoMatchesFoundException;
 import com.edutech.progressive.repository.MatchRepository;
+import com.edutech.progressive.repository.TicketBookingRepository;
 import com.edutech.progressive.service.MatchService;
 
 @Service
 public class MatchServiceImplJpa implements MatchService {
 
     private MatchRepository matchRepository;
+
+    @Autowired
+    private TicketBookingRepository ticketBookingRepository;
 
     @Autowired
     public MatchServiceImplJpa(MatchRepository matchRepository) {
@@ -44,6 +48,7 @@ public class MatchServiceImplJpa implements MatchService {
 
     @Override
     public void deleteMatch(int matchId) throws SQLException {
+        ticketBookingRepository.deleteByMatchId(matchId);
         matchRepository.deleteById(matchId);
     }
 
